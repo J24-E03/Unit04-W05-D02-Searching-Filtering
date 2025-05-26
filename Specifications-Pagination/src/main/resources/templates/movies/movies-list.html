@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie List</title>
+    <link rel="stylesheet" th:href="@{/css/movies-list.css}">
+    <style th:replace="~{fragments/fragment :: base-styling}"></style>
+
+
+
+</head>
+<body>
+
+    <div th:replace="~{fragments/fragment :: navbar}"></div>
+
+    <h1>Movie List</h1>
+
+
+    <table>
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Release Year</th>
+            <th>Language</th>
+            <th>Won Oscars</th>
+            <th>Director</th>
+            <th>Actions</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="movie : ${movies}">
+            <td th:text="${movie.title}">Title</td>
+            <td th:text="${movie.releaseYear}">Year</td>
+            <td th:text="${movie.language}">Lang</td>
+            <td th:text="${movie.wonOscars}">Oscars</td>
+            <td th:text="${movie.director?.firstName}">Director</td>
+            <td><a th:href="@{/movies/{id}(id=${movie.id})}">Movie Details</a></td>
+
+        </tr>
+        </tbody>
+    </table>
+
+
+</body>
+</html>
