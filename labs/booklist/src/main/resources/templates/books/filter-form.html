@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Filter Books by Genre</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style th:replace="~{fragments/fragment :: base-style}"></style>
+    <style>
+        .filter-form {
+            padding: 15px;
+            max-width: 500px;
+            margin: 20px auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            align-self: center;
+        }
+
+        .filter-form h2 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        .genre-option {
+            margin: 5px 0;
+        }
+
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/fragment :: navbar}"></div>
+
+<h1>Filter Books by Genre</h1>
+
+<form th:action="@{/books/filter}" method="get" class="filter-form">
+    <p>Select Genre(s):</p>
+    <div th:each="genre : ${genres}" class="genre-option">
+        <input type="checkbox" name="genre" th:value="${genre}" th:id="${'genre_' + genre}">
+        <label th:for="${'genre_' + genre}" th:text="${genre}"></label><br>
+    </div>
+    <button type="submit">Filter Books</button>
+</form>
+
+<footer>
+    <div th:replace="~{fragments/fragment :: footer}"></div>
+</footer>
+
+</body>
+</html>
