@@ -5,9 +5,9 @@ import com.example.booklist.service.AuthorService;
 import com.example.booklist.service.BookService;
 import com.example.booklist.service.GenreService;
 import com.example.booklist.service.PublisherService;
+import com.example.booklist.specification.BookSpecification;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.engine.jdbc.mutation.spi.BindingGroup;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,9 +24,27 @@ public class BookController {
     private final GenreService genreService;
     private final PublisherService publisherService;
 
+
     @GetMapping
-    public String getBooks(Model model) {
-        model.addAttribute("books", bookService.findAllBooks());
+    public String getBooks(@RequestParam(required = false) String title,
+            @RequestParam(required = false) String author,
+            @RequestParam(required = false) String publisher,
+            @RequestParam(required = false) String genre,
+            @RequestParam(required = false) Boolean inStock,
+            @RequestParam(required = false) Integer startYear,
+            @RequestParam(required = false) Integer endYear,
+                           @RequestParam(required = false) Double price,
+                           Model model) {
+        List<Book> books = bookService.searchBooks(title, author, publisher, inStock, startYear, endYear, genre, price);
+        model.addAttribute("books", books);
+        model.addAttribute("title", title);
+        model.addAttribute("author", author);
+        model.addAttribute("publisher", publisher);
+        model.addAttribute("genre", genre);
+        model.addAttribute("startYear", startYear);
+        model.addAttribute("endYear", endYear);
+        model.addAttribute("inStock", inStock);
+        model.addAttribute("price", price);
         return "books/books-list";
     }
 

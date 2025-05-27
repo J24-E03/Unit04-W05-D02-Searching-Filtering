@@ -6,9 +6,12 @@ import com.example.booklist.model.Book;
 import com.example.booklist.model.Publisher;
 import com.example.booklist.repository.BookRepository;
 import com.example.booklist.repository.PublisherRepository;
+import com.example.booklist.specification.BookSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -99,11 +102,19 @@ public class BookService {
                 .orElseThrow(() -> new ResourceNotFound("Book not found"));
     }
 
-//    public List<String> findAllGenres() {
-//        return bookRepository.findAllGenres();
-//    }
+    public List<Book> searchBooks(String title, String author, String publisher,
+                                  Boolean inStock, Integer startYear,
+                                  Integer endYear, String genre, Double price) {
 
-//    public List<Book> findBooksByGenres(List<String> genre) {
-//        return bookRepository.findBooksByGenres(genre);
-//    }
+        Specification<Book> specification = Specification.where(BookSpecification.byTitleContains(title)
+                .and(BookSpecification.byAuthor(author).and(BookSpecification.byPublisherNameContains(publisher))
+                        .and(BookSpecification.byGenre(genre).and(BookSpecification.byInStock(inStock))
+                                .and(BookSpecification.byYearBetween(startYear, endYear)).and(BookSpecification.byPriceLessThan(price)))));
+
+        return bookRepository.findAll(specification);
+
+
+
+    }
+
 }

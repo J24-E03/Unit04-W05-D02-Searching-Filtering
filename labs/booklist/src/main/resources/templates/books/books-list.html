@@ -7,6 +7,41 @@
     <link rel="stylesheet" href="/styles.css">
     <style th:replace="~{fragments/fragment :: base-style}"></style>
     <style>
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .filters label {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .filters input {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .filters button {
+            padding: 6px 12px;
+            background-color: #0b6c4b;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+        .filters button:hover {
+            background-color: #095b3e;
+        }
         .action-buttons {
             display: flex;
             gap: 10px;
@@ -42,6 +77,33 @@
 
 <div class="content">
     <h1>Book List</h1>
+
+    <form method="get" th:action="@{/books}">
+        <div class="filters">
+            <label for="title">Title: </label>
+            <input type="text" id="title" name="title" th:value="${title}">
+
+            <label for="author">Author: </label>
+            <input id="author" name="author" th:value="${author}">
+
+            <label for="publisher">Publisher: </label>
+            <input type="text" id="publisher" name="publisher" th:value="${publisher}">
+
+            <label for="price">Price: </label>
+            <input type="number" id="price" name="price" th:value="${price}">
+
+            <label for="inStock">In Stock: </label>
+            <input type="checkbox" id="inStock" name="inStock"  th:checked="${inStock != null and inStock}">
+
+            <label for="startYear">Start Year: </label>
+            <input type="number" id="startYear" name="startYear" th:value="${startYear}">
+
+            <label for="endYear">End Year: </label>
+            <input type="number" id="endYear" name="endYear" th:value="${endYear}">
+
+            <button type="submit">Filter</button>
+        </div>
+    </form>
 
     <div th:each="book : ${books}"
          class="book"
