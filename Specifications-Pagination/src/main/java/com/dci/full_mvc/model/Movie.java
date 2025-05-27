@@ -25,7 +25,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-//@ToString
+@ToString
 public class Movie implements Serializable {
 
     @Id

@@ -30,18 +30,35 @@ public class MovieSpecification {
 
 //    each method represents a single query we want to perform
 //    speicfication methods always return specifciation
-    public static Specification<Movie> titleEquals(String title){
+//    checking if a value is contained in the table field
+    public static Specification<Movie> titleContains(String title){
         return (root,query, cb)->{
             if(title == null || title.trim().isEmpty()) return null;
-            return cb.equal(root.get("title"), title);
+            return cb.like(cb.lower(root.get("title")) , "%" + title.toLowerCase() + "%");
         };
     }
 
 
-    public static Specification<Movie> releaseYearGreaterThan(Integer year){
+    public static Specification<Movie> releaseYearBetween(Integer start, Integer end){
         return (root, query, criteriaBuilder) -> {
-            if(year == null) return null;
-            return criteriaBuilder.greaterThan(root.get("releaseYear"),year);
+            if(start == null ||end == null) return null;
+            return criteriaBuilder.between(root.get("releaseYear"),start,end);
         };
     }
+
+    public static Specification<Movie> directorNameContains(String directorName){
+        return (root, query, cb) -> {
+            if(directorName == null || directorName.trim().isEmpty()) return null;
+
+            return cb.or(
+                    cb.like(cb.lower(root.get("director").get("firstName")) , "%" + directorName.toLowerCase() + "%"),
+                    cb.like(cb.lower(root.get("director").get("lastName")) , "%" + directorName.toLowerCase() + "%")
+
+                    );
+        };
+    }
+
+
+
+
 }

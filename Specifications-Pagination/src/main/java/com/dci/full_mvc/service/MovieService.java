@@ -9,6 +9,7 @@ import com.dci.full_mvc.repository.DirectorRepository;
 import com.dci.full_mvc.repository.GenreRepository;
 import com.dci.full_mvc.repository.ImageMetaDataRepository;
 import com.dci.full_mvc.repository.MovieRepository;
+import com.dci.full_mvc.specification.MovieSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.domain.Specification;
@@ -91,6 +92,16 @@ public class MovieService {
 
         movie.setImage(imageMetaData);
         return movieRepository.save(movie);
+    }
+
+
+    public List<Movie> searchMovies(String title, Integer startYear, Integer endYear, String directorName){
+        Specification<Movie> specification = Specification.where(MovieSpecification.titleContains(title))
+                .and(MovieSpecification.releaseYearBetween(startYear,endYear))
+                .and(MovieSpecification.directorNameContains(directorName));
+
+
+        return movieRepository.findAll(specification);
     }
 
 

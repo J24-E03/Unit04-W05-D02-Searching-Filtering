@@ -36,11 +36,27 @@ public class MovieController {
 
 
 
+//    @GetMapping
+//    public String allMovies(Model model){
+//        model.addAttribute("movies", movieService.findAll());
+//        return "movies/movies-list";
+//    }
+
+
     @GetMapping
-    public String allMovies(Model model){
-        model.addAttribute("movies", movieService.findAll());
+    public String listMovies(@RequestParam(required = false) String title,
+                             @RequestParam(required = false) Integer startYear,
+                             @RequestParam(required = false) Integer endYear,
+                             @RequestParam(required = false) String directorName,
+                             Model model){
+        List<Movie> movies = movieService.searchMovies(title,startYear,endYear,directorName);
+
+        model.addAttribute("movies",movies);
+
         return "movies/movies-list";
     }
+
+
 
 
 
