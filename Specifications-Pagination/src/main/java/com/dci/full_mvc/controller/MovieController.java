@@ -52,6 +52,10 @@ public class MovieController {
         List<Movie> movies = movieService.searchMovies(title,startYear,endYear,directorName);
 
         model.addAttribute("movies",movies);
+        model.addAttribute("title",title);
+        model.addAttribute("startYear",startYear);
+        model.addAttribute("endYear",endYear);
+        model.addAttribute("directorName",directorName);
 
         return "movies/movies-list";
     }
