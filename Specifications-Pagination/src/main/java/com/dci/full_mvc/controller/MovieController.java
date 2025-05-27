@@ -7,6 +7,7 @@ import com.dci.full_mvc.repository.DirectorRepository;
 import com.dci.full_mvc.repository.GenreRepository;
 import com.dci.full_mvc.repository.MovieRepository;
 import com.dci.full_mvc.service.MovieService;
+import com.dci.full_mvc.service.PdfService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ public class MovieController {
     private final DirectorRepository directorRepository;
     private final GenreRepository genreRepository;
     private final MovieService movieService;
+    private final PdfService pdfService;
 
 
 
@@ -131,6 +133,22 @@ public class MovieController {
         return "redirect:/movies";
     }
 
+
+    @GetMapping(value="/generate",produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<byte[]> downloadPdf(){
+        List<Movie> movies = movieService.findAll();
+
+        byte[] pdfBytes = pdfService.generatePdf(movies);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDisposition(ContentDisposition.builder("attachment").filename("movies.pdf").build());
+
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(pdfBytes);
+    }
 
 
 }
