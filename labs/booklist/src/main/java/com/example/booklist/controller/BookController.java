@@ -53,8 +53,13 @@ public class BookController {
         bookService.addNewBook(book, authorIds, publisherIds);
         return "redirect:/books";
     }
-
     @GetMapping("/{id}")
+    public String vireBookDetails(@PathVariable Long id, Model model) {
+        model.addAttribute("book", bookService.findBookById(id));
+        return "books/book-details";
+    }
+
+    @GetMapping("/update/{id}")
     public String getBook(@PathVariable Long id, Model model) {
         model.addAttribute("book", bookService.findBookById(id));
         model.addAttribute("authors", authorService.findAllAuthors());
@@ -81,19 +86,6 @@ public class BookController {
     public String deleteBook(@PathVariable Long id, Model model) {
         bookService.deleteBookById(id);
         return "redirect:/books";
-    }
-
-    @GetMapping("/filter/form")
-    public String filterBooksByGenres(Model model) {
-        //model.addAttribute("genres", bookService.findAllGenres());
-        return "books/filter-form";
-    }
-
-    @GetMapping("/filter")
-    public String filterBooksByGenres(@RequestParam List<String> genre, Model model) {
-        //model.addAttribute("books", bookService.findBooksByGenres(genre));
-       // model.addAttribute("selectedGenre", genre);
-        return "books/filtered-books";
     }
 
 }
